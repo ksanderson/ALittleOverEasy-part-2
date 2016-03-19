@@ -1,7 +1,7 @@
 //Code from https://youtu.be/PO5_aqapZXY
 using UnityEngine;
 using System.Collections;
-using UnityEditor;
+//using UnityEditor;
 
 public class ThirdPersonCamera : MonoBehaviour
 {
