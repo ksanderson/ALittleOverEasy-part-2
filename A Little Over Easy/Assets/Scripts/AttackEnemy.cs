@@ -3,35 +3,31 @@ using System.Collections;
 
 public class AttackEnemy : MonoBehaviour
 {
-    private Renderer myRenderer;
-    private BoxCollider hitBox;
+    private Animator animator;
+    private int attackHash = Animator.StringToHash("attacking");
+    private int swingStateHash = Animator.StringToHash("Base Layer.swordSwing2");
+    private bool attacking = false;
 
-	// Use this for initialization
-	void Start ()
+    // Use this for initialization
+    void Start ()
     {
-        myRenderer = GetComponent<Renderer>();
-        hitBox = GetComponent<BoxCollider>();
+        animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetButton("Fire1"))
+        if (Input.GetButtonDown("Fire1"))
         {
-            //GetComponent<Animation>().Play();
-            myRenderer.enabled = true;
-            hitBox.enabled = true;
+            animator.SetTrigger(attackHash);
         }
-        else
-        {
-            myRenderer.enabled = false;
-            hitBox.enabled = false;
-        }
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+        attacking = stateInfo.fullPathHash == swingStateHash;
     }
 
     void OnTriggerStay(Collider other)
     {
-        if (/*Input.GetButton("Fire1") && */other.tag.Equals("Enemy"))
+        if (attacking && other.tag.Equals("Enemy"))
         {
             if(other.GetComponent<EnemyHealth>().TakeDamage(1))
             {
